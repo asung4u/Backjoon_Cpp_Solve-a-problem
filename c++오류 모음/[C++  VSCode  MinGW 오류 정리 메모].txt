@@ -1,0 +1,69 @@
+[C++ / VSCode / MinGW 오류 정리 메모]
+
+1. include 오류 (물결선 표시)
+- 오류: includePath를 업데이트하세요 / iostream 인식 안 됨
+- 원인: 컴파일러(MinGW)가 설치되지 않았거나 VSCode가 경로를 모름
+- 해결:
+  - MinGW(g++) 설치
+  - 환경 변수 PATH에 C:\mingw64\bin 추가
+  - VSCode 재시작
+
+2. g++ --version 실행 안 됨
+- 원인: g++ 미설치 or PATH 미등록
+- 해결:
+  - MinGW 설치
+  - PATH 설정 후 터미널 재실행
+
+3. exe 파일이 안 보임
+- 원인: 컴파일이 안 됐거나 빌드 실패
+- 해결:
+  - g++ 파일.cpp -o 파일.exe 로 직접 컴파일
+  - 빌드 오류 먼저 해결
+
+4. namespace 관련 오류
+- 오류: cout, cin을 찾을 수 없음
+- 원인: std:: 네임스페이스 미사용
+- 해결:
+  - std::cout, std::cin 사용
+  - 또는 using namespace std; (비권장)
+
+5. Python처럼 출력하려다 컴파일 에러
+- 예: std::cout << N '*' (i+1)
+- 원인: C++은 문자열 자동 결합 불가
+- 해결:
+  - << 연산자로 모두 분리해서 출력
+  - 예: std::cout << N << " * " << i+1 << " = " << N*(i+1);
+
+6. main 함수 없음
+- 오류: 실행/링크 에러
+- 원인: C++ 프로그램은 반드시 main() 필요
+- 해결:
+  - int main() { ... return 0; }
+
+7. undefined reference to std::cout / std::cin
+- 원인: gcc로 C++ 파일을 컴파일함
+- 해결:
+  - gcc ❌ → g++ ⭕ 사용
+  - VSCode 빌드 설정을 g++로 변경
+
+8. launch: program does not exist
+- 원인: 실행 파일 경로를 launch.json에 안 적음
+- 해결:
+  - "program": "${fileDirname}/${fileBasenameNoExtension}.exe"
+
+9. VSCode에서 실행이 안 됨
+- 원인: 빌드(Task)와 실행(Debug) 분리 구조 이해 부족
+- 해결:
+  - 먼저 g++로 빌드
+  - 그 다음 exe를 실행
+
+10. 디버거 실행 로그가 길게 나옴
+- 내용: WindowsDebugLauncher.exe, gdb.exe 등
+- 의미:
+  - 정상 동작
+  - VSCode가 내부적으로 gdb를 실행하는 과정 출력일 뿐
+
+11. 환경설정 매번 해야 하나?
+- 결론:
+  - ❌ 매번 할 필요 없음
+  - 한 번 제대로 설정하면 계속 사용 가능
